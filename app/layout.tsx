@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
+import TraviaFormDialog from "../components/travia-form-dialog";
+import { FormParamsStoreProvider } from "../providers/api-params-store-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -11,6 +14,11 @@ const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+});
+
+const quickSand = Quicksand({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -26,9 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased ${quickSand.className}`}
       >
-        {children}
+        <FormParamsStoreProvider>
+          {children}
+          <TraviaFormDialog />
+        </FormParamsStoreProvider>
       </body>
     </html>
   );
