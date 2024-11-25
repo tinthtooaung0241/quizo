@@ -5,15 +5,6 @@ export type ParamsAction = {
   setFormParams: (data: TraviaFormSchemaType) => void;
 };
 
-export const initFormParamsStore = (): TraviaFormSchemaType => {
-  return {
-    amount: 10,
-    type: undefined,
-    category: undefined,
-    difficulty: undefined,
-  };
-};
-
 export const defaultInitState: TraviaFormSchemaType = {
   amount: 10,
   type: undefined,
@@ -30,10 +21,7 @@ export const createFormParamsStore = (
     ...initState,
     setFormParams: (data: TraviaFormSchemaType) => {
       set({
-        amount: data.amount,
-        difficulty: data.difficulty,
-        type: data.type,
-        category: data.category,
+        ...data,
       });
     },
   }));

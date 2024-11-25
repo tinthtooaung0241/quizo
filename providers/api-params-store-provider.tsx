@@ -22,7 +22,7 @@ export const FormParamsStoreProvider = ({
 }: FormParamsStoreProviderProps) => {
   const storeRef = useRef<FormParamsStoreApi>();
   if (!storeRef.current) {
-    storeRef.current = createFormParamsStore(initFormParamsStore());
+    storeRef.current = createFormParamsStore();
   }
 
   return (
