@@ -1,5 +1,6 @@
 import { fetcher } from "@/api/fetcher";
 import { TraviaFormSchemaType } from "@/components/get-travia-form";
+import { decodeHtmlEntities } from "@/lib/htmlDecoder";
 import { useFormParams } from "@/providers/api-params-store-provider";
 import { Travia, TraviaApiResponse } from "@/types/travia";
 import useSWR from "swr";
@@ -18,6 +19,13 @@ const constructUrl = (data: TraviaFormSchemaType) => {
   return apiUrl;
 };
 
+const decodeTravia = (travia: Travia): Travia => ({
+  ...travia,
+  question: decodeHtmlEntities(travia.question),
+  correct_answer: decodeHtmlEntities(travia.correct_answer),
+  incorrect_answers: travia.incorrect_answers.map(decodeHtmlEntities),
+});
+
 const useTravia = () => {
   const formParams = useFormParams((state) => state.formParams);
 
@@ -34,8 +42,10 @@ const useTravia = () => {
     },
   );
 
+  const decodedTravias = data ? data?.results.map(decodeTravia) : undefined;
+
   return {
-    traviaData: data?.results ?? [],
+    traviaData: decodedTravias,
     error,
     isLoading,
     response_code: data?.response_code,
