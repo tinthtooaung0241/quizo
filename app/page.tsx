@@ -1,13 +1,16 @@
 "use client";
 
+import useTravia from "@/hooks/useTravia";
 import { Button } from "../components/ui/button";
 import { useFormParams } from "../providers/api-params-store-provider";
 import useDialogStore from "../store/dialog-store";
+import { TraviaFormSchemaType } from "@/components/get-travia-form";
+import { ParamsState } from "@/store/api-params-store";
 
 export default function Home() {
   const { onOpen } = useDialogStore();
-  const { ...current } = useFormParams((state) => state);
-  console.log("page form", current);
+  const { traviaData, response_code, isLoading, error } = useTravia();
+  console.log(traviaData, "traviaData");
   return (
     <div className="flex h-[100vh] flex-col items-center justify-center gap-y-8">
       <div className="flex flex-col font-bold">

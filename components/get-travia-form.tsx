@@ -20,15 +20,17 @@ import {
   SelectValue,
 } from "./ui/select";
 import CategoriesComboBox from "./categories-combo-box";
-import { useFormParams } from "@/providers/api-params-store-provider";
+import { useFormParams } from "../providers/api-params-store-provider";
+import useDialogStore from "@/store/dialog-store";
 
 const traviaFormSchema = z.object({
   amount: z.preprocess(
-    (value) => (value ? parseInt(value as string, 10) : undefined),
+    (value) => (value ? Number(value) : undefined),
     z
       .number()
       .min(1, "Please enter at least 1 question.")
-      .max(50, "Maximum 50 questions allowed."),
+      .max(50, "Maximum 50 questions allowed.")
+      .optional(),
   ),
   category: z.number().optional(),
   difficulty: z.enum(["easy", "medium", "hard"]).optional(),
@@ -47,13 +49,14 @@ const TraviaForm = () => {
       type: undefined,
     },
   });
-  const { setFormParams, ...currentParams } = useFormParams((state) => state);
+  const open = useDialogStore((state) => state.open);
+  const onClose = useDialogStore((state) => state.onClose);
+  const { setFormParams } = useFormParams((state) => state);
 
   const onSubmit = (data: TraviaFormSchemaType) => {
     setFormParams(data);
-
+    onClose();
     console.log("form ", data);
-    console.log("Updated state after submit:", { ...currentParams });
   };
   return (
     <div className="w-full">
