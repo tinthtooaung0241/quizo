@@ -26,6 +26,14 @@ const decodeTravia = (travia: Travia): Travia => ({
   incorrect_answers: travia.incorrect_answers.map(decodeHtmlEntities),
 });
 
+const shuffleAnswers = (
+  correct_answer: string,
+  incorrect_answers: string[],
+) => {
+  const answers = [...incorrect_answers, correct_answer];
+  return answers.sort(() => Math.random() - 0.5);
+};
+
 const useTravia = () => {
   const formParams = useFormParams((state) => state.formParams);
 
@@ -37,12 +45,13 @@ const useTravia = () => {
     [apiUrl, serializedData],
     ([url]) => fetcher(url),
     {
+      revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     },
   );
 
-  const decodedTravias = data ? data?.results.map(decodeTravia) : undefined;
+  const decodedTravias = data ? data?.results?.map(decodeTravia) : undefined;
 
   return {
     traviaData: decodedTravias,

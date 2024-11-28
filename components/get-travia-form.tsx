@@ -22,6 +22,7 @@ import {
 import CategoriesComboBox from "./categories-combo-box";
 import { useFormParams } from "../providers/api-params-store-provider";
 import useDialogStore from "@/store/dialog-store";
+import { useRouter } from "next/navigation";
 
 const traviaFormSchema = z.object({
   amount: z.preprocess(
@@ -49,13 +50,15 @@ const TraviaForm = () => {
       type: undefined,
     },
   });
-  const open = useDialogStore((state) => state.open);
+  const router = useRouter();
+
   const onClose = useDialogStore((state) => state.onClose);
   const { setFormParams } = useFormParams((state) => state);
 
   const onSubmit = (data: TraviaFormSchemaType) => {
     setFormParams(data);
     onClose();
+    router.push("/trivias");
     console.log("form ", data);
   };
   return (

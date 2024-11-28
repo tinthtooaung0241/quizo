@@ -1,5 +1,5 @@
 import { TraviaFormSchemaType } from "@/components/get-travia-form";
-import { stat } from "fs";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand";
 
 export type ParamsAction = {
@@ -22,10 +22,18 @@ export const defaultInitState: TraviaFormSchemaType = {
 export const createFormParamsStore = (
   initState: TraviaFormSchemaType = defaultInitState,
 ) => {
-  return createStore<FormParamsStore>()((set) => ({
-    formParams: { ...initState },
-    setFormParams: (data: Partial<TraviaFormSchemaType>) => {
-      set((state) => ({ formParams: { ...state.formParams, ...data } }));
-    },
-  }));
+  return createStore<FormParamsStore>()(
+    persist(
+      (set) => ({
+        formParams: { ...initState },
+        setFormParams: (data: Partial<TraviaFormSchemaType>) => {
+          set((state) => ({ formParams: { ...state.formParams, ...data } }));
+        },
+      }),
+      {
+        name: "api-params-store",
+        storage: createJSONStorage(() => sessionStorage),
+      },
+    ),
+  );
 };
