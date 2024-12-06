@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const TraviaCardListSkeleton = () => {
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Carousel
         className="flex w-full max-w-4xl flex-col"
         opts={{
@@ -20,17 +17,26 @@ const TraviaCardListSkeleton = () => {
         }}
       >
         <CarouselContent className="py-10">
-          {[...Array(3)].map((_, index) => (
+          {[...Array(5)].map((_, index) => (
             <CarouselItem
               key={index}
               className="flex items-center justify-center"
             >
-              <Skeleton className="h-[300px] w-full max-w-[600px] rounded-xl" />
+              <Skeleton className="h-[400px] w-full rounded-xl" />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="bg-red-300" />
-        <CarouselNext />
+        <div className="flex w-full justify-between">
+          <div>
+            <Skeleton className="h-8 w-40" />
+          </div>
+          <div className="flex flex-col items-center justify-center gap-y-2">
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-6 w-40" />
+          </div>
+        </div>
+        <CarouselPrevious className="w-10 bg-[#FF6347] hover:bg-[#FF4500]" />
+        <CarouselNext className="w-10 bg-[#32CD32] hover:bg-[#228B22]" />
       </Carousel>
     </div>
   );

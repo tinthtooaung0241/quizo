@@ -1,7 +1,4 @@
 "use client";
-import useTravia from "@/hooks/useTravia";
-import React, { useEffect, useState } from "react";
-import TraviaCard from "./travia-card";
 import {
   Carousel,
   CarouselApi,
@@ -10,7 +7,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Progress } from "@/components/ui/progress";
+import useTravia from "@/hooks/useTravia";
+import { useEffect, useState } from "react";
+import TraviaCard from "./travia-card";
 import TraviaCardListSkeleton from "./travia-card-list-skeleton";
+import AnswerStats from "./answer-stats";
+import ScoreAlertDialog from "./tiavia-score-alertdialog";
+
+const caculatePoint = (correctCount: number, incorrectCount: number) => {
+  const point = correctCount * 2 - incorrectCount;
+  return point;
+};
 
 const TraviaCardList = () => {
   const [correctCount, setCorrectCount] = useState(0);
@@ -18,6 +26,7 @@ const TraviaCardList = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [currentQ, setCurrentQ] = useState(0);
   const [totalQ, setTotalQ] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { traviaData, isLoading } = useTravia();
 
   const onCorrectCount = (correct: boolean) => {
@@ -25,6 +34,9 @@ const TraviaCardList = () => {
       ? setCorrectCount((prev) => prev + 1)
       : setIncorrectCount((prev) => prev + 1);
   };
+
+  const progress = (currentQ / totalQ) * 100;
+  const point = caculatePoint(correctCount, incorrectCount);
 
   useEffect(() => {
     if (!api) {
@@ -39,13 +51,19 @@ const TraviaCardList = () => {
     });
   }, [api]);
 
+  useEffect(() => {
+    if (correctCount + incorrectCount === traviaData?.length) {
+      setDialogOpen(true);
+    }
+  }, [correctCount, incorrectCount, traviaData]);
+
   if (isLoading) {
     return <TraviaCardListSkeleton />; //skeleton for travia loading
   }
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center justify-center">
         <Carousel
           className="flex w-full max-w-4xl flex-col"
           opts={{
@@ -63,17 +81,24 @@ const TraviaCardList = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="bg-red-300" />
-          <CarouselNext />
+          <div className="flex w-full justify-between">
+            <div>
+              <AnswerStats
+                correctCount={correctCount}
+                incorrectCount={incorrectCount}
+              />
+            </div>
+            {dialogOpen && <ScoreAlertDialog point={point} />}
+            <div className="flex flex-col items-center justify-center gap-y-2">
+              <Progress value={progress} className="w-40" />
+              <p className="text-md font-medium">
+                Questions {currentQ} of {totalQ}
+              </p>
+            </div>
+          </div>
+          <CarouselPrevious className="w-10 bg-[#FF6347] hover:bg-[#FF4500]" />
+          <CarouselNext className="w-10 bg-[#32CD32] hover:bg-[#228B22]" />
         </Carousel>
-      </div>
-      <div>
-        <p>
-          Question {currentQ} of {totalQ}
-        </p>
-        <p>
-          Correct {correctCount} Incorrect {incorrectCount}
-        </p>
       </div>
     </>
   );

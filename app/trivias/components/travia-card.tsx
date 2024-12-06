@@ -1,12 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Travia } from "@/types/travia";
-import { CheckCircle, CircleCheck, CircleX } from "lucide-react";
-import { useMemo, useState } from "react";
-import { string } from "zod";
-import MultipleQuestion from "./multiple-question";
+import { useState } from "react";
 import BooleanQuestion from "./boolean-question";
+import MultipleQuestion from "./multiple-question";
 
 interface TraviaCardProps {
   travia: Travia;

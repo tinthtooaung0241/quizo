@@ -1,5 +1,5 @@
 "use client";
-import { fetcher } from "@/api/fetcher";
+import { fetcher } from "@/lib/fetcher";
 import React, { useState } from "react";
 import useSWR from "swr";
 import {
@@ -50,7 +50,7 @@ const CategoriesComboBox = ({ field }: CategoriesComboBoxProps) => {
           role="combobox"
           aria-expanded={open}
           disabled={isLoading}
-          className="w-full"
+          className="w-full rounded-full border border-black bg-[#dee2e6] px-4"
         >
           {isLoading
             ? "Loading..."

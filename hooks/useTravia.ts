@@ -1,4 +1,4 @@
-import { fetcher } from "@/api/fetcher";
+import { fetcher } from "@/lib/fetcher";
 import { TraviaFormSchemaType } from "@/components/get-travia-form";
 import { decodeHtmlEntities } from "@/lib/htmlDecoder";
 import { useFormParams } from "@/providers/api-params-store-provider";
@@ -25,14 +25,6 @@ const decodeTravia = (travia: Travia): Travia => ({
   correct_answer: decodeHtmlEntities(travia.correct_answer),
   incorrect_answers: travia.incorrect_answers.map(decodeHtmlEntities),
 });
-
-const shuffleAnswers = (
-  correct_answer: string,
-  incorrect_answers: string[],
-) => {
-  const answers = [...incorrect_answers, correct_answer];
-  return answers.sort(() => Math.random() - 0.5);
-};
 
 const useTravia = () => {
   const formParams = useFormParams((state) => state.formParams);

@@ -73,9 +73,9 @@ const TraviaForm = () => {
             name="amount"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>
+                <FormLabel className="text-base font-medium">
                   Number of Questions
-                  <span className="pl-2 text-sm text-neutral-600">
+                  <span className="pl-2 text-sm text-neutral-500">
                     (Choose between 1 and 50 questions)
                   </span>
                 </FormLabel>
@@ -85,7 +85,7 @@ const TraviaForm = () => {
                     placeholder="How many questions?"
                     type="number"
                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                    className=""
+                    className="rounded-full border border-black bg-[#dee2e6] px-4"
                     value={field.value || 10}
                   />
                 </FormControl>
@@ -119,10 +119,10 @@ const TraviaForm = () => {
                     }}
                     value={field.value || ""}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="rounded-full border border-black bg-[#dee2e6] px-4">
                       <SelectValue placeholder="Select a difficulty" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="">
                       <SelectItem value="none">Any</SelectItem>
                       <SelectItem value="easy">Easy</SelectItem>
                       <SelectItem value="medium">Medium</SelectItem>
@@ -147,7 +147,7 @@ const TraviaForm = () => {
                     }}
                     value={field.value || ""}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="rounded-full border border-black bg-[#dee2e6] px-4">
                       <SelectValue placeholder="Select a difficulty" />
                     </SelectTrigger>
                     <SelectContent>
@@ -161,7 +161,10 @@ const TraviaForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-4 w-full">
+          <Button
+            type="submit"
+            className="mt-4 w-full rounded-full border border-black bg-[#FFB900] text-lg text-black shadow-[4px_4px_0px_#664A00] transition-all duration-300 ease-in-out hover:translate-x-[2px] hover:bg-[] hover:shadow-[2px_2px_0px_#664A00] active:translate-x-[0px] active:shadow-none"
+          >
             Generate Quiz
           </Button>
         </form>

@@ -1,6 +1,6 @@
 import React from "react";
 import TraviaCardList from "./components/travia-list";
-import Loading from "@/components/ui/searching";
+import TraviaScoreDialog from "./components/tiavia-score-alertdialog";
 
 const TraviaPage = () => {
   return (

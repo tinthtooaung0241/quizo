@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Travia } from "@/types/travia";
 import { CircleCheck, CircleX } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
 interface MultipleQuestionProps {
   selectedAnswer: string | null;
@@ -30,11 +30,11 @@ const MultipleQuestion = ({
     travia.incorrect_answers,
   );
 
-  const [answers, setAnswers] = useState<string[]>(shuffledAnswers);
+  const [answers] = useState<string[]>(shuffledAnswers);
 
   return (
-    <div className="bg-primary w-98 flex flex-col gap-y-4 rounded-xl px-6 py-4 shadow-[6px_6px_0px_rgba(196,148,1,1)]">
-      <p className="text-text-secondary text-wrap text-lg font-bold">
+    <div className="w-98 flex flex-col gap-y-4 rounded-xl bg-primary px-6 py-4 shadow-[6px_6px_0px_rgba(196,148,1,1)]">
+      <p className="text-wrap text-lg font-bold text-text-secondary">
         {travia.question}
       </p>
       <div className="flex flex-col gap-y-4">
@@ -43,28 +43,27 @@ const MultipleQuestion = ({
             key={answer}
             className="flex w-full items-center justify-center gap-2"
           >
-            <div className="bg-secondary flex h-8 w-8 items-center justify-center rounded-full font-bold text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary font-bold text-white">
               {index + 1}
             </div>
             <Button
               onClick={() => {
-                console.log(answers, shuffledAnswers);
                 onAnswer(answer);
               }}
               variant={"outline"}
               className={cn(
                 `relative flex-1 text-wrap border-none font-semibold shadow-[6px_6px_0px_rgba(196,148,1,1)] transition-all duration-200 ease-in-out hover:bg-[#B37400]`,
-                selectedAnswer === answer
-                  ? isCorrect
+                selectedAnswer
+                  ? answer === travia.correct_answer
                     ? "bg-[#00BFA6]"
-                    : "bg-[#E63946]"
+                    : selectedAnswer === answer && "bg-[#E63946]"
                   : "bg-background hover:translate-x-[3px] hover:text-white hover:shadow-[3px_3px_0px_rgba(196,148,1,1)] active:translate-x-[3px] active:shadow-none",
               )}
             >
               {selectedAnswer === answer && isCorrect ? (
                 <CircleCheck
                   className={cn(
-                    "text-text-secondary absolute left-4 h-5 w-5",
+                    "absolute left-4 h-5 w-5 text-text-secondary",
                     selectedAnswer === answer ? "flex" : "hidden",
                   )}
                   strokeWidth={3}
@@ -72,7 +71,7 @@ const MultipleQuestion = ({
               ) : (
                 <CircleX
                   className={cn(
-                    "text-text-secondary absolute left-4 h-5 w-5",
+                    "absolute left-4 h-5 w-5 text-text-secondary",
                     selectedAnswer === answer ? "flex" : "hidden",
                   )}
                   strokeWidth={3}
