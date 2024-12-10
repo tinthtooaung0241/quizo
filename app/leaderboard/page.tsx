@@ -1,0 +1,24 @@
+import { getUsers } from "@/lib/queries";
+import React from "react";
+import PlayerStats from "./components/player-stats";
+
+const LeaderBoard = async () => {
+  const users = await getUsers();
+  return (
+    <div className="flex w-full items-center justify-center">
+      <div className="flex w-[450px] flex-col gap-y-4 rounded-xl border border-black bg-amber-50 p-5">
+        <h1 className="w-full text-center text-2xl font-bold">Leaderboard</h1>
+        {users.map((user, index) => (
+          <div
+            key={index}
+            className="flex items-center gap-x-4 transition-all duration-200 ease-in-out hover:odd:rotate-1 hover:even:-rotate-1"
+          >
+            <PlayerStats user={user} index={index} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default LeaderBoard;

@@ -37,9 +37,8 @@ const useTravia = () => {
     [apiUrl, serializedData],
     ([url]) => fetcher(url),
     {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
+      revalidateOnMount: true, // Ensure it fetches when the component mounts
+      dedupingInterval: 0, // No deduplication for repeated requests with the same key
     },
   );
 

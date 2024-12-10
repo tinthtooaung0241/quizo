@@ -16,7 +16,7 @@ import AnswerStats from "./answer-stats";
 import ScoreAlertDialog from "./tiavia-score-alertdialog";
 
 const caculatePoint = (correctCount: number, incorrectCount: number) => {
-  const point = correctCount * 2 - incorrectCount;
+  const point = correctCount * 10 - incorrectCount;
   return point;
 };
 
@@ -33,6 +33,11 @@ const TraviaCardList = () => {
     correct
       ? setCorrectCount((prev) => prev + 1)
       : setIncorrectCount((prev) => prev + 1);
+  };
+
+  const triggerHandler = () => {
+    setCorrectCount(0);
+    setIncorrectCount(0);
   };
 
   const progress = (currentQ / totalQ) * 100;
@@ -88,7 +93,9 @@ const TraviaCardList = () => {
                 incorrectCount={incorrectCount}
               />
             </div>
-            {dialogOpen && <ScoreAlertDialog point={point} />}
+            {dialogOpen && (
+              <ScoreAlertDialog point={point} triggerHandler={triggerHandler} />
+            )}
             <div className="flex flex-col items-center justify-center gap-y-2">
               <Progress value={progress} className="w-40" />
               <p className="text-md font-medium">

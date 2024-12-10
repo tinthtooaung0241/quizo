@@ -13,13 +13,14 @@ export async function POST(req: Request) {
     if (point == null)
       return new NextResponse("Point is required.", { status: 400 });
 
-    const exsitingUser = await prisma.user.findUnique({ where: { userId } });
+    const existingUser = await prisma.user.findUnique({ where: { userId } });
 
-    if (exsitingUser) {
+    if (existingUser) {
+      const updatedPoints = Math.max(0, existingUser.point + point);
       const user = await prisma.user.update({
         where: { userId },
         data: {
-          point: exsitingUser.point + point,
+          point: updatedPoints,
         },
       });
       return NextResponse.json(user);

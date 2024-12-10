@@ -4,8 +4,10 @@ import { Quicksand } from "next/font/google";
 import "./globals.css";
 import TraviaFormDialog from "../components/travia-form-dialog";
 import { FormParamsStoreProvider } from "../providers/api-params-store-provider";
-import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
+import NavBar from "@/components/nav-bar";
+import { getImageProps } from "next/image";
+import { CounterStoreProvider } from "@/providers/point-store-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,12 +39,14 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased ${quickSand.className}`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased ${quickSand.className} `}
         >
           <FormParamsStoreProvider>
-            <Toaster />
-            {children}
-            <TraviaFormDialog />
+            <CounterStoreProvider>
+              <NavBar />
+              {children}
+              <TraviaFormDialog />
+            </CounterStoreProvider>
           </FormParamsStoreProvider>
         </body>
       </html>

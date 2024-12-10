@@ -1,45 +1,27 @@
 import prisma from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
-
-export async function PATCH(
-  req: Request,
-  { params }: { params: { userId: string } },
-) {
-  try {
-    const { userId } = await auth();
-    const { point } = await req.json();
-
-    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
-    if (!point)
-      return new NextResponse("Point to update is required", { status: 400 });
-
-    const user = prisma.user.update({
-      where: { userId: params.userId },
-      data: { point },
-    });
-
-    return NextResponse.json(user);
-  } catch (error) {
-    console.log("User point update error", error);
-    return new NextResponse("Internal error", { status: 500 });
-  }
-}
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { userId: string } },
 ) {
   try {
-    const { userId } = await auth();
+    const { userId } = await params;
 
-    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
-    const user = prisma.user.findUnique({
-      where: { userId: params.userId },
+    const user = await prisma.user.findUnique({
+      where: { userId },
     });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
     return NextResponse.json(user);
   } catch (error) {
-    console.log("User point update error", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("User get error", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

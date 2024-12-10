@@ -18,3 +18,10 @@ export interface TaiviaFormParams {
   difficulty?: string;
   type?: string;
 }
+
+export interface User {
+  name: string;
+  point: number;
+  imageUrl: string;
+  userId: string;
+}
