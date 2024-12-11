@@ -16,7 +16,6 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import useDialogStore from "@/store/dialog-store";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { postUser } from "@/lib/queries";
-
 import { fetcher } from "@/lib/fetcher";
 import { User } from "@prisma/client";
 import useSWR, { mutate } from "swr";

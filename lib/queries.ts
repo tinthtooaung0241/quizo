@@ -28,20 +28,18 @@ export const postUser = async (userData: {
   }
 };
 
-export const getUsers = async (): Promise<User[]> => {
-  const response = await fetch(API_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+export async function getUsers() {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error("Failed to fetch users");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return []; // Return an empty array or some default data
   }
-
-  return response.json();
-};
+}
 
 export const getUser = async (userId: string): Promise<number> => {
   const response = await fetch(`${API_URL}/${userId}`, {
